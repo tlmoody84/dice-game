@@ -1,3 +1,4 @@
+"use Client"
 import React, { useState } from "react";
 // import Dice from "./dice"; // Import the Dice component
 // import { getAllDocuments } from "../utils/firebaseUtils";

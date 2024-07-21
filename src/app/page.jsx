@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { getAllDocuments } from "../utils/firebaseUtils";
+// "use Client"
+import React from "react";
+// import { getAllDocuments } from "../utils/firebaseUtils";
 import { db } from "../../firebase.config";
 import LoginForm from "./components/LoginForm";
 import LogoutButton from "./components/LogoutButton";
