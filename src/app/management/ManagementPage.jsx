@@ -1,8 +1,12 @@
-"use Client"
+// "use Client"
+// import React, { useState } from "react";
+// import Dice from "./dice"; // Import the Dice component
+// import { getAllDocuments } from "../utils/firebaseUtils";
+// import { db } from "../../../firebase.config"
+
+"use client"
 import React, { useState } from "react";
 import Dice from "./dice"; // Import the Dice component
-import { getAllDocuments } from "../utils/firebaseUtils";
-import { db } from "../../../firebase.config"
 
 export default function ManagementPage(props) {
   const diceFaces = {
@@ -90,3 +94,6 @@ export default function ManagementPage(props) {
     </div>
   );
 }
+
+
+

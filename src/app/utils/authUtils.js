@@ -4,9 +4,6 @@ import {
   signOut,
 } from "firebase/auth";
 
-
-
-
 async function registerUser(email, password) {
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {

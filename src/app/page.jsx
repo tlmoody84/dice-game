@@ -1,9 +1,11 @@
 "use client"
-// import { db } from "../../firebase.config";
+import { db } from "../../firebase.config";
 import LoginForm from "./components/LoginForm";
 import LogoutButton from "./components/LogoutButton";
 import RegisterForm from "./components/RegisterForm";
 import React, { useState } from "react";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { app } from "../../firebase.config";
 
 const handleLogin = async (loginData) => {
   const { username, password } = loginData;
@@ -52,6 +54,5 @@ function Home() {
 }
 }
 export {HomePage};
-
 
 
