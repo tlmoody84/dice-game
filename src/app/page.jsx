@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import LoginForm from "@/components/LoginForm";
 import LogoutButton from "@/components/LogoutButton";
 import RegisterForm from "@/components/RegisterForm";
-import { getAuth, signInWithEmailAndPassword } from "./firebase/auth";
+// import { getAuth, signInWithEmailAndPassword } from "./firebase/auth";
 
 
 const handleLogin = async (loginData) => {
