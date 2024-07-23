@@ -4,7 +4,6 @@ import LoginForm from "../components/LoginForm";
 import LogoutButton from "../components/LogoutButton";
 import RegisterForm from "../components/RegisterForm";
 
-
 const handleLogin = async (loginData) => {
   const { username, password } = loginData;
   // Simulate user authentication (replace with actual logic)
