@@ -37,7 +37,7 @@ function App() {
           onChange={handleNumberChange}
           min="1"
           max="8"
-          className="border rounded px-2 py-1 font-extrabold"
+          className="border rounded px-2 py-1 font-extrabold bg-green-100 text-black"
         />
       </div>
       <div className="flex justify-center mb-10">

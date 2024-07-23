@@ -10,7 +10,6 @@ const Dice = ({ value }) => {
     6: '⚅',
   };
 
-  return <span className="text-5xl font-bold">{diceFaces[value]}</span>;
-};
+  return <span style={{ fontSize: '8rem' }} className="font-normal">{diceFaces[value]}</span>;};
 
 export default Dice;

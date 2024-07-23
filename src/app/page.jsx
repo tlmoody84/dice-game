@@ -1,9 +1,8 @@
 "use client"
 import React, { useState } from "react";
-import LoginForm from "@/components/LoginForm";
-import LogoutButton from "@/components/LogoutButton";
-import RegisterForm from "@/components/RegisterForm";
-// import { getAuth, signInWithEmailAndPassword } from "./firebase/auth";
+import LoginForm from "../components/LoginForm";
+import LogoutButton from "../components/LogoutButton";
+import RegisterForm from "../components/RegisterForm";
 
 
 const handleLogin = async (loginData) => {
