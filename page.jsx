@@ -1,11 +1,10 @@
 "use client"
-import { db } from "../../firebase.config";
-import LoginForm from "./components/LoginForm";
-import LogoutButton from "./components/LogoutButton";
-import RegisterForm from "./components/RegisterForm";
+import LoginForm from "./src/components/LoginForm";
+import LogoutButton from "./src/components/LogoutButton";
+import RegisterForm from "./src/components/RegisterForm";
 import React, { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { app } from "../../firebase.config";
+import Dice from "./path/to/Dice";
 
 const handleLogin = async (loginData) => {
   const { username, password } = loginData;
@@ -18,11 +17,11 @@ const handleLogin = async (loginData) => {
   }
 };
 
-export default function HomePage() {
+export default function Page() {
 
 const initialUserState = { username: null, password: null };
 
-function Home() {
+function Homepage() {
 
   const [userState, setUserState] = useState(initialUserState);
   
@@ -53,6 +52,6 @@ function Home() {
   );  
 }
 }
-export {HomePage};
+export {Page};
 
 

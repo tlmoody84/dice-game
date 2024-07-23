@@ -17,23 +17,23 @@ export default function RootLayout({ children }) {
         <header className="w-100 bg-emerald-800">
           <nav className="flex justify-center w-100 ">
             <Link
-              className="m-1 text-emerald-300 hover:text-emerald-600"
+              className="m-1 text-purple-700 hover:text-pink-700"
               href="/home"
             >
-              home
+            Sign In
             </Link>
             <Link
-              className="m-1 text-emerald-300 hover:text-emerald-600"
-              href="/Management"
+              className="m-1 text-pink-700 hover:text-purple-700"
+              href="/management"
             >
-              rules
+              Game
             </Link>
-            <Link
+            {/* <Link
               className="m-1 text-emerald-300 hover:text-emerald-600"
               href="/About"
             >
               about
-            </Link>
+            </Link> */}
           </nav>
         </header>
         {children}
