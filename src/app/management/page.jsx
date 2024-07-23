@@ -1,26 +1,8 @@
 "use client"
 import React, { useState } from "react";
-import Dice from "./dice"; // Import the Dice component
-// import { getAllDocuments } from "../utils/firebaseUtils";
-// import { db } from "../../../firebase.config"
+import Dice from "./Dice"; // Assuming Dice.js is in the same directory
 
-
-export default function ManagementPage(props) {
-  const diceFaces = {
-    1: "⚀",
-    2: "⚀⚁",
-    3: "⚀⚂",
-    4: "⚀⚁⚂",
-    5: "⚀⚁⚂⚃",
-    6: "⚀⚁⚂⚃⚄",
-  };
-
-  return (
-    <div className="dice">{diceFaces[props.value]}</div>
-  );
-}
-
- function Home() {
+function App() {
   const [numDice, setNumDice] = useState(1);
   const [rolls, setRolls] = useState([]);
   const [showRules, setShowRules] = useState(false);
@@ -48,16 +30,15 @@ export default function ManagementPage(props) {
         <label htmlFor="num-dice" className="mr-4">
           Number of Dice:
         </label>
-
         <input
-  type="number"
-  id="num-dice"
-  value={numDice}
-  onChange={handleNumberChange}
-  min="1"
-  max="8"  
-  className="border rounded px-2 py-1 font-extrabold"
-/>
+          type="number"
+          id="num-dice"
+          value={numDice}
+          onChange={handleNumberChange}
+          min="1"
+          max="8"
+          className="border rounded px-2 py-1 font-extrabold"
+        />
       </div>
       <div className="flex justify-center mb-10">
         <button onClick={handleRollDice} className="bg-green-500 text-white px-4 py-2 rounded-md">
@@ -67,18 +48,18 @@ export default function ManagementPage(props) {
       {rolls.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {rolls.map((roll, index) => (
-            <diceFaces key={index} value={roll} />
+            <Dice key={index} value={roll} />
           ))}
         </div>
       )}
       <button
-  onClick={toggleRules}
-  className={`text-blue-500 underline hover:bg-pink-500 hover:text-white`}
->
-  {showRules ? "Hide Rules" : "Show Rules"}
-</button>
+        onClick={toggleRules}
+        className={`text-blue-500 underline hover:bg-pink-500 hover:text-white`}
+      >
+        {showRules ? "Hide Rules" : "Show Rules"}
+      </button>
       {showRules && (
-        <div className="mt-4 bg-pink-500 text-green-500 rounded-md p-4">
+        <div className="mt-4 bg-pink-400 text-black rounded-md p-4">
           <h2>Dice Rolling Rules</h2>
           <p>
             This is a simple dice rolling game. You can choose to roll between 1
@@ -92,5 +73,4 @@ export default function ManagementPage(props) {
   );
 }
 
-
-
+export default App;

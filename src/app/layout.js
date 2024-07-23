@@ -28,13 +28,7 @@ export default function RootLayout({ children }) {
             >
               Game
             </Link>
-            {/* <Link
-              className="m-1 text-emerald-300 hover:text-emerald-600"
-              href="/About"
-            >
-              about
-            </Link> */}
-          </nav>
+           </nav>
         </header>
         {children}
         <footer className="text-center">&copy; DICE GAME</footer>

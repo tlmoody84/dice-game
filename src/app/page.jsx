@@ -1,10 +1,10 @@
 "use client"
-import LoginForm from "./src/components/LoginForm";
-import LogoutButton from "./src/components/LogoutButton";
-import RegisterForm from "./src/components/RegisterForm";
 import React, { useState } from "react";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import Dice from "./path/to/Dice";
+import LoginForm from "@/components/LoginForm";
+import LogoutButton from "@/components/LogoutButton";
+import RegisterForm from "@/components/RegisterForm";
+import { getAuth, signInWithEmailAndPassword } from "./firebase/auth";
+
 
 const handleLogin = async (loginData) => {
   const { username, password } = loginData;
