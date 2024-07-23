@@ -1,7 +1,7 @@
 import {
   collection,
   getDocs,
-  // addDoc,
+  addDoc,
   doc,
   updateDoc,
   deleteDoc,
@@ -82,3 +82,9 @@ async function deleteDocument(db, collectionName, id) {
 }
 
 export { getAllDocuments, addDocument, updateDocument, deleteDocument };
+
+
+
+
+
+
