@@ -1,7 +1,7 @@
 import {
   collection,
   getDocs,
-  addDoc,
+  // addDoc,
   doc,
   updateDoc,
   deleteDoc,
@@ -22,7 +22,7 @@ async function getAllDocuments(db, collectionName) {
     documents.push({ id: doc.id, ...doc.data() });
   });
 
-  console.log("Documents from from ", collectionName, documents);
+  console.log("Documents", collectionName, documents);
 
   return documents;
 }
