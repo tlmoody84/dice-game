@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import Dice from "./Dice"; // Assuming Dice.js is in the same directory
+// import DiceRoller from "./components/DiceRoller";
 
 function App() {
   const [numDice, setNumDice] = useState(1);
