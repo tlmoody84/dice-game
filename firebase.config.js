@@ -17,7 +17,7 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: "1:914108664992:web:e2f422fcfb4e67606ccdc5"
+  measurementId: "G-F19Q7VB146"
 };
 
 // Initialize Firebase
