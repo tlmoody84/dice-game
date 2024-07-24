@@ -5,19 +5,35 @@ import { registerUser } from "../utils/authUtils";
 const RegisterForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
 
+  <RegisterForm onRegister={registerUser} setErrorMessage={setErrorMessage} />
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your registration logic here
-    console.log("Email:", email);
-    console.log("Password:", password);
-    await registerUser(email, password);
+  
+    // Basic validation (optional, improve based on your needs)
+    if (!email || !password) {
+      setErrorMessage("Please enter email and password");
+      return;
+    }
+  
+    try {
+      // Call your registration function with email and password
+      await registerUser(email, password);
+      setEmail(""); // Clear email field after successful registration (optional)
+      setPassword(""); // Clear password field after successful registration (optional)
+      setErrorMessage(null); // Clear any previous errors
+      // Handle successful registration (optional, e.g., display success message, navigate)
+    } catch (error) {
+      setErrorMessage(error.message || "Registration failed"); // Display error message
+    }
   };
 
   return (
     <div className="items-center justify-center py-8 bg-emerald-50">
       <p className="py-4 text-2xl font-bold text-center text-emerald-600">
-        Please Register or Login to roll the dice.
+        The DICE are waiting.
       </p>
       <div className="w-full max-w-md p-8 mx-auto space-y-8 bg-white rounded shadow-lg y-4">
         <h2 className="text-2xl font-bold text-center text-emerald-600">
@@ -37,7 +53,7 @@ const RegisterForm = () => {
               type="email"
               autoComplete="email"
               required
-              className="w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+              className="w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:outline-none bg-gray-200 opacity-50 text-black focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -56,7 +72,7 @@ const RegisterForm = () => {
               type="password"
               autoComplete="current-password"
               required
-              className="w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+              className="w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:outline-none bg-gray-200 opacity-50 text-black focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
