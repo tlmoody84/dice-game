@@ -124,7 +124,6 @@ const RegisterForm = () => {
     // Simulate registration delay
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    // Replace this with actual backend logic
     setSuccessMessage('Registration successful!');
     setIsLoading(false);
   };
