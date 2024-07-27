@@ -3,6 +3,8 @@
         "Firestore",
         "noopener",
         "noreferrer",
-        "tailwindcss"
+        "tailwindcss",
+        "testid",
+        "testuser"
     ]
 }
