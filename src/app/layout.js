@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
             </Link>
             <Link
               className="m-1 text-pink-700 hover:text-purple-700"
-              href="/management"
+              href="/game"
             >
               Game
             </Link>

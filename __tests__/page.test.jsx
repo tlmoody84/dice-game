@@ -2,7 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import Page from "src/app/management/page";
-import Dice from '@/app/management/Dice';
+import Dice from '@/app/game/Dice';
 
 
 describe('Page', () => {
