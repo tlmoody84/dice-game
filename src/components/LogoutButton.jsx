@@ -1,38 +1,70 @@
-// import React from "react";
+// import React from 'react';
+// import LogoutButton from './LogoutButton'; // Import the LogoutButton component
 
-// const LogoutButton = ({ handleLogout }) => {
+// const MyComponent = () => {
+//   const handleLogout = () => {
+//     // Your logout logic here, e.g., clear user data, redirect to login page
+//     console.log('Logging out...');
+//   };
+
 //   return (
-//     <button
-//       onClick={handleLogout}
-//       className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-//     >
-//       Logout
-//     </button>
+//     <div>
+//       {/* Other content */}
+//       <LogoutButton handleLogout={handleLogout} />
+//     </div>
 //   );
 // };
 
-// export default LogoutButton;
+// export default MyComponent;
 
 
 
 
 
 
-
-
-import React from 'react';
-import LogoutButton from './LogoutButton'; // Import the LogoutButton component
+import React, { useState, useEffect } from 'react';
+import { getAuth, signOut } from 'firebase/auth';
+import LogoutButton from './LogoutButton';
 
 const MyComponent = () => {
-  const handleLogout = () => {
-    // Your logout logic here, e.g., clear user data, redirect to login page
-    console.log('Logging out...');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const auth = getAuth();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);   
+
+      }
+    });
+    return () => unsubscribe();   
+
+  }, [auth]); // Dependency array to ensure effect runs only once
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      // Handle successful logout, e.g., clear local storage or redirect
+      console.log('Logged out successfully');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
   };
 
   return (
     <div>
       {/* Other content */}
-      <LogoutButton handleLogout={handleLogout} />
+      {isLoggedIn ? (
+        <>
+          <p>You are logged in!</p>
+          <LogoutButton handleLogout={handleLogout} />
+        </>
+      ) : (
+        // Content for not logged in users
+        <div>You are not logged in.</div>
+      )}
     </div>
   );
 };

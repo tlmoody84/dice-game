@@ -47,4 +47,9 @@ async function logout() {
     });
 }
 
+const userCredential = await auth.signInWithEmailAndPassword(
+  email,
+  password
+);
+
 export { registerUser, login, logout };

@@ -1,14 +1,13 @@
 "use client";
 import React, { useState } from "react";
-import Dice from "./Dice"; // Assuming Dice.js is in the same directory
-
+import Dice from "./Dice"; 
 function App() {
   const [numDice, setNumDice] = useState(1);
   const [player1Rolls, setPlayer1Rolls] = useState([]);
   const [player2Rolls, setPlayer2Rolls] = useState([]);
   const [player1Score, setPlayer1Score] = useState(0);
   const [player2Score, setPlayer2Score] = useState(0);
-  const [currentTurn, setCurrentTurn] = useState(1); // 1 for Player 1, 2 for Player 2
+  const [currentTurn, setCurrentTurn] = useState(1); 
   const [showRules, setShowRules] = useState(false);
 
   const handleNumberChange = (event) => {
@@ -31,12 +30,11 @@ function App() {
       setPlayer2Score(player2Score + rollTotal);
     }
 
-    setCurrentTurn(currentTurn === 1 ? 2 : 1); // Switch turns
+    setCurrentTurn(currentTurn === 1 ? 2 : 1); 
   };
 
 
   const handleRestartGame = () => {
-    // Reset all game states
     setNumDice(1);
     setPlayer1Rolls([]);
     setPlayer2Rolls([]);
