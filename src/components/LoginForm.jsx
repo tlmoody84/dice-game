@@ -7,8 +7,7 @@ const LoginForm = () => {
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Added state for login success
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -22,12 +21,11 @@ const LoginForm = () => {
     setIsLoading(true);
     setErrorMessage('');
 
-    // Replace this with actual backend authentication logic
     try {
       // Simulate successful login
       await new Promise((resolve) => setTimeout(resolve, 2000));
       console.log('Login successful');
-      setIsLoggedIn(true); // Set isLoggedIn to true on successful login
+      setIsLoggedIn(true); 
     } catch (error) {
       setErrorMessage('Login failed');
     }
