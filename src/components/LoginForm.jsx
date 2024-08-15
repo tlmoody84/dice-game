@@ -29,7 +29,7 @@ const LoginForm = () => {
       setIsLoggedIn(true);
       alert('Login successful! Redirecting to game page...');
 
-      window.location.href = "https://dice-game-3zzf4nth8-tlmoody84s-projects.vercel.app/game";
+      window.location.href = "/game";
     } catch (error) {
       setErrorMessage('Login failed');
     } finally {
