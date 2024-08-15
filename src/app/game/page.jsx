@@ -172,9 +172,9 @@ function App() {
         </div>
       </div>
 
-      <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded-md mt-4 self-center">
+      {/* <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded-md mt-4 self-center">
         Logout
-      </button>
+      </button> */}
   
       {/* Dice Rolling and Scores Section */}
       <div className="w-1/2 flex flex-col items">
