@@ -1,18 +1,18 @@
 import React from 'react';
-import LogoutButton from './LogoutButton'; 
+import { logout } from '@/utils/authUtils';
 
-const MyComponent = () => {
-  const router = useRouter();
-  const handleLogout = () => {
-    console.log('Logging out...');
+const LogoutButton = ({ onLogout }) => {
+  const handleLogout = async () => {
+    await logout();
+    onLogout();
   };
-
   return (
-    <div>
-      {/* Other content */}
-      <LogoutButton handleLogout={handleLogout} />
-    </div>
+    <button
+      onClick={handleLogout}
+      className="bg-red-500 text-white px-4 py-2 rounded"
+    >
+      Logout
+    </button>
   );
 };
-
-export default MyComponent;
+export default LogoutButton;

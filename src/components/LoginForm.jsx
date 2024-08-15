@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-
-
-const LoginForm = () => {
+const LoginForm = ({ onLogin }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
-
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -24,12 +21,10 @@ const LoginForm = () => {
     setIsLoading(true);
     setErrorMessage('');
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log('Login successful');
+      await onLogin(formData); // Assuming onLogin is a prop function to handle login
       setIsLoggedIn(true);
       alert('Login successful! Redirecting to game page...');
-
-      window.location.href = "/game";
+      window.location.href = "/game"; // Redirecting after successful login
     } catch (error) {
       setErrorMessage('Login failed');
     } finally {
@@ -39,13 +34,13 @@ const LoginForm = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-green-600">
+        <label htmlFor="login-email" className="block text-sm font-medium text-green-600">
           Email address
         </label>
         <input
           type="email"
           name="email"
-          id="email"
+          id="login-email"
           autoComplete="email"
           required
           className="text-black mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-4 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -54,13 +49,13 @@ const LoginForm = () => {
         />
       </div>
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-green-600">
+        <label htmlFor="login-password" className="block text-sm font-medium text-green-600">
           Password
         </label>
         <input
           type="password"
           name="password"
-          id="password"
+          id="login-password"
           autoComplete="current-password"
           required
           className="text-black mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-4 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
