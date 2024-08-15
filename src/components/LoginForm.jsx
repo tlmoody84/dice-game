@@ -1,37 +1,41 @@
 import React, { useState } from 'react';
 
+
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.email || !formData.password) {
+    const { email, password } = formData;
+    if (!email || !password) {
       setErrorMessage('Please enter email and password');
       return;
     }
     setIsLoading(true);
     setErrorMessage('');
-
     try {
-      // Simulate successful login
       await new Promise((resolve) => setTimeout(resolve, 2000));
       console.log('Login successful');
-      setIsLoggedIn(true); 
+      setIsLoggedIn(true);
+      alert('Login successful! Redirecting to game page...');
+
+      window.location.href = "https://dice-game-3zzf4nth8-tlmoody84s-projects.vercel.app/game";
     } catch (error) {
       setErrorMessage('Login failed');
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
-
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
@@ -78,5 +82,4 @@ const LoginForm = () => {
     </form>
   );
 };
-
 export default LoginForm;

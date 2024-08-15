@@ -1,55 +1,53 @@
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+	signOut,
 } from "firebase/auth";
-
 import { auth } from "../../firebase.config";
-
 async function registerUser(email, password) {
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed up
-      const user = userCredential.user;
-      console.log("created user: ", user);
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log("error creating user: ", errorCode, errorMessage);
-    });
+	try {
+		const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+		const user = userCredential.user;
+		return user;
+	} catch (error) {
+		const errorCode = error.code;
+		const errorMessage = error.message;
+		console.error("Error creating user: ", errorCode, errorMessage);
+		throw new Error(errorMessage); // Propagate the error to the caller
+	}
 }
-
 async function login(email, password) {
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      console.log("user logged in: ", user);
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log("error logging in user: ", errorCode, errorMessage);
-    });
+	try {
+		const userCredential = await signInWithEmailAndPassword(auth, email, password);
+		const user = userCredential.user;
+		return user; // Return the user object for further use
+	} catch (error) {
+		const errorCode = error.code;
+		const errorMessage = error.message;
+		console.error("Error logging in user: ", errorCode, errorMessage);
+		throw new Error(errorMessage); // Propagate the error to the caller
+	}
 }
-
 async function logout() {
-  signOut(auth)
-    .then(() => {
-      // Sign-out successful
-      console.log("user Logged Out");
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log("error logging in user: ", errorCode, errorMessage);
-    });
+	try {
+		await signOut(auth);
+		console.log("User logged out");
+	} catch (error) {
+		const errorCode = error.code;
+		const errorMessage = error.message;
+		console.error("Error logging out user: ", errorCode, errorMessage);
+		throw new Error(errorMessage); // Propagate the error to the caller
+	}
 }
-
-const userCredential = await auth.signInWithEmailAndPassword(
-  email,
-  password
-);
-
 export { registerUser, login, logout };
+
+
+
+
+
+
+
+
+
+
+

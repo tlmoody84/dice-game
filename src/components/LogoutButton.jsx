@@ -1,9 +1,9 @@
 import React from 'react';
-import LogoutButton from './LogoutButton'; // Import the LogoutButton component
+import LogoutButton from './LogoutButton'; 
 
 const MyComponent = () => {
+  const router = useRouter();
   const handleLogout = () => {
-    // Your logout logic here, e.g., clear user data, redirect to login page
     console.log('Logging out...');
   };
 
