@@ -18,10 +18,9 @@ export default function HomePage() {
       const userCredential = await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
       const user = userCredential.user;
       console.log("Login successful:", user);
-      setUserState({ username: user.email, password: loginData.password }); // Update userState with user info
+      setUserState({ username: user.email, password: loginData.password }); 
     } catch (error) {
       console.error("Login failed:", error);
-      // Handle login errors
     }
   };
   const handleRegister = async (registerData) => {
@@ -29,7 +28,7 @@ export default function HomePage() {
       const userCredential = await createUserWithEmailAndPassword(auth, registerData.email, registerData.password);
       const user = userCredential.user;
       console.log("Registration successful:", user);
-      setUserState({ username: user.email, password: registerData.password }); // Update userState with user info
+      setUserState({ username: user.email, password: registerData.password }); 
     } catch (error) {
       console.error("Registration failed:", error);
       // Handle registration errors

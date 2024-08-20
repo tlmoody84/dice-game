@@ -1,122 +1,86 @@
 "use client";
 import React, { useState } from 'react';
 import Dice from "./Dice";
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore';
-import { auth } from '../../../firebase.config';
+import { collection, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import { db, auth } from '../../../firebase.config'; 
 import { useRouter } from 'next/navigation';
 
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: "G-F19Q7VB146"};
-
-  
-  async function saveScore(userId, score) {
-    const db = firebase.firestore();
-    const userRef = db.collection('users').doc(userId);
-  
-    return userRef.get()
-      .then(doc => {
-        if (doc.exists) {
-          const existingScores = doc.data().scores || [];
-          existingScores.push(score);
-          return userRef.update({ scores: existingScores });
-        } else {
-          return userRef.set({ scores: [score] });
-        }
-      })
-      .catch(error => {
-        console.error("Error saving score:", error);
-      });
+async function saveScore(userId, score) {
+  const userRef = doc(db, 'users', userId);
+  try {
+    const docSnap = await getDoc(userRef);
+    if (docSnap.exists()) {
+      const existingScores = docSnap.data().scores || [];
+      existingScores.push(score);
+      await updateDoc(userRef, { scores: existingScores });
+    } else {
+      await setDoc(userRef, { scores: [score] });
+    }
+  } catch (error) {
+    console.error("Error saving score:", error);
   }
-  function getUserScores(userId) {
-    const db = firebase.firestore();
-    const userRef = db.collection('users').doc(userId);
-  
-    return userRef.get()
-      .then(doc => {
-        if (doc.exists) {
-          return doc.data().scores   
-   || [];
-        } else {
-          return [];
-        }
-      })
-      .catch(error => {
-        console.error("Error getting user scores:", error);
-        return [];
-      });
+}
+async function getUserScores(userId) {
+  const userRef = doc(db, 'users', userId);
+  try {
+    const docSnap = await getDoc(userRef);
+    if (docSnap.exists()) {
+      return docSnap.data().scores || [];
+    }
+    return [];
+  } catch (error) {
+    console.error("Error getting user scores:", error);
+    return [];
   }
-
-
-firebase.initializeApp(firebaseConfig);
-
+}
 function App() {
   const [numDice, setNumDice] = useState(1);
-  const [player1Name, setPlayer1Name] = useState(""); 
+  const [player1Name, setPlayer1Name] = useState("");
   const [player2Name, setPlayer2Name] = useState("");
-  const [player2Rolls, setPlayer2Rolls] = useState([]);
   const [player1Rolls, setPlayer1Rolls] = useState([]);
+  const [player2Rolls, setPlayer2Rolls] = useState([]);
   const [player1Score, setPlayer1Score] = useState(0);
   const [player2Score, setPlayer2Score] = useState(0);
   const [currentTurn, setCurrentTurn] = useState(1);
   const [showRules, setShowRules] = useState(false);
-
+  const router = useRouter();
   const handleNumberChange = (event) => {
     setNumDice(parseInt(event.target.value));
   };
-
   const handlePlayer1NameChange = (event) => {
     setPlayer1Name(event.target.value);
   };
-
   const handlePlayer2NameChange = (event) => {
     setPlayer2Name(event.target.value);
   };
-
   const handleRollDice = async () => {
-    const newRolls = [];
-    for (let i = 0; i < numDice; i++) {
-      newRolls.push(Math.floor(Math.random() * 6) + 1);
-    }
-
+    const newRolls = Array.from({ length: numDice }, () => Math.floor(Math.random() * 6) + 1);
     const rollTotal = newRolls.reduce((acc, roll) => acc + roll, 0);
-
     if (currentTurn === 1) {
-      setPlayer1Rolls([...player1Rolls, ...newRolls]);
-      setPlayer1Score(player1Score + rollTotal);
+      setPlayer1Rolls(prevRolls => [...prevRolls, ...newRolls]);
+      setPlayer1Score(prevScore => prevScore + rollTotal);
     } else {
-      setPlayer2Rolls([...player2Rolls, ...newRolls]);
-      setPlayer2Score(player2Score + rollTotal);
+      setPlayer2Rolls(prevRolls => [...prevRolls, ...newRolls]);
+      setPlayer2Score(prevScore => prevScore + rollTotal);
     }
-
-    const db = firebase.firestore();
-    const gameRef = db.collection('games').doc('yourGameId');
-
+    const gameRef = doc(db, 'games', 'yourGameId'); 
     try {
-      await gameRef.set({
-        player1Name, 
+      await setDoc(gameRef, {
+        player1Name,
         player2Name,
         player1Score,
         player2Score,
         player1Rolls,
         player2Rolls,
         currentPlayer: currentTurn,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        timestamp: new Date().toISOString(), 
       });
       console.log('Game state saved to Firestore');
     } catch (error) {
       console.error('Error saving game state:', error);
     }
-
     setCurrentTurn(currentTurn === 1 ? 2 : 1);
   };
-
   const handleRestartGame = () => {
     setNumDice(1);
     setPlayer1Rolls([]);
@@ -125,28 +89,25 @@ function App() {
     setPlayer2Score(0);
     setCurrentTurn(1);
   };
-
   const toggleRules = () => {
-    setShowRules(!showRules);
+    setShowRules(prevShowRules => !prevShowRules);
   };
   const handleLogout = async () => {
     try {
       await auth.signOut();
       console.log("User signed out successfully");
-      router.push('/'); 
+      router.push('/');
     } catch (error) {
       console.error("Error signing out:", error);
     }
   };
-  
   return (
     <div className="container mx-auto px-12 py-12 min-h-screen bg-black flex">
       {/* Player Names Section */}
       <div className="w-1/2 flex flex-col items-center">
-        <h1 className="text-7xl font-bold mb-20 text-center">Lets Start Rolling!</h1>
-  
+        <h1 className="text-7xl font-bold mb-20 text-center text-white">Lets Start Rolling!</h1>
         <div className="mb-10">
-          <label htmlFor="player1-name" className="mr-4">
+          <label htmlFor="player1-name" className="mr-4 text-white">
             Player 1 Name:
           </label>
           <input
@@ -157,9 +118,8 @@ function App() {
             className="border rounded px-2 py-1 font-extrabold bg-green-100 text-black"
           />
         </div>
-  
         <div className="mb-10">
-          <label htmlFor="player2-name" className="mr-4">
+          <label htmlFor="player2-name" className="mr-4 text-white">
             Player 2 Name:
           </label>
           <input
@@ -168,17 +128,15 @@ function App() {
             value={player2Name}
             onChange={handlePlayer2NameChange}
             className="border rounded px-2 py-1 font-extrabold bg-green-100 text-black"
-          />       
+          />
         </div>
+        <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded-md mt-4 self-center">
+          Logout
+        </button>
       </div>
-
-      {/* <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded-md mt-4 self-center">
-        Logout
-      </button> */}
-  
       {/* Dice Rolling and Scores Section */}
-      <div className="w-1/2 flex flex-col items">
-        <div className="flex justify-between mb-10">
+      <div className="w-1/2 flex flex-col items-center">
+        <div className="flex justify-between mb-10 w-full">
           <p className="text-xl font-bold text-white">
             Player 1 Score: {player1Score}
           </p>
@@ -186,9 +144,8 @@ function App() {
             Player 2 Score: {player2Score}
           </p>
         </div>
-  
         <div className="flex items-center mb-10">
-          <label htmlFor="num-dice" className="mr-4">
+          <label htmlFor="num-dice" className="mr-4 text-white">
             Number of Dice:
           </label>
           <input
@@ -201,54 +158,50 @@ function App() {
             className="border rounded px-2 py-1 font-extrabold bg-green-100 text-black"
           />
         </div>
-  
-        <div className="flex justify-between mb-10">
-  <button
-    onClick={currentTurn === 1 ? handleRollDice : () => {}}
-    disabled={currentTurn !== 1}
-    className="bg-green-500 text-white px-4 py-2 rounded-md"
-  >
-    Player 1 Roll
-  </button>
-  <button
-    onClick={currentTurn === 2 ? handleRollDice : () => {}}
-    disabled={currentTurn !== 2}
-    className="bg-green-500 text-white px-4 py-2 rounded-md ml-4"
-  >
-    Player 2 Roll
-  </button>
-  <button onClick={handleRestartGame} className="bg-red-500 text-white px-4 py-2 rounded-md ml-4">
-    Restart Game
-  </button>
-</div>
-  
+        <div className="flex justify-between mb-10 w-full">
+          <button
+            onClick={currentTurn === 1 ? handleRollDice : () => {}}
+            disabled={currentTurn !== 1}
+            className="bg-green-500 text-white px-4 py-2 rounded-md"
+          >
+            Player 1 Roll
+          </button>
+          <button
+            onClick={currentTurn === 2 ? handleRollDice : () => {}}
+            disabled={currentTurn !== 2}
+            className="bg-green-500 text-white px-4 py-2 rounded-md ml-4"
+          >
+            Player 2 Roll
+          </button>
+          <button onClick={handleRestartGame} className="bg-red-500 text-white px-4 py-2 rounded-md ml-4">
+            Restart Game
+          </button>
+        </div>
         {player1Rolls.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
             {player1Rolls.map((roll, index) => (
               <Dice key={index} value={roll} />
             ))}
           </div>
         )}
-  
         {player2Rolls.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
             {player2Rolls.map((roll, index) => (
               <Dice key={index} value={roll} />
             ))}
           </div>
         )}
-  
-        <button onClick={toggleRules} className={`text-blue-500 underline hover:bg-pink-500 hover:text-white`}>
+        <button onClick={toggleRules} className="text-blue-500 underline hover:bg-pink-500 hover:text-white">
           {showRules ? "Hide Rules" : "Show Rules"}
         </button>
-  
         {showRules && (
           <div className="mt-4 bg-pink-400 text-black rounded-md p-4">
             <h2>Dice Rolling Rules</h2>
-          <p>This is a simple dice rolling game for two players. You can choose to roll between 1 and 8 dice per turn. The goal is to accumulate the highest score by rolling the dice and adding up the values. The player with the highest score at the end wins.You can determine the highest roll to end the game.</p>
-        </div>
-      )}
+            <p>This is a simple dice rolling game for two players. You can choose to roll between 1 and 8 dice per turn. The goal is to accumulate the highest score by rolling the dice and adding up the values. The player with the highest score at the end wins.</p>
+          </div>
+        )}
+      </div>
     </div>
-</div>
-  )}
+  );
+}
 export default App;
